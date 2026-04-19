@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexaWebStudio | Web Design & Development</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Syne:wght@400;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0A0A0F;
+      --surface: #111118;
+      --surface-2: #18181F;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-glow: rgba(110, 86, 255, 0.35);
+      --text-primary: #F0EFFF;
+      --text-secondary: rgba(240, 239, 255, 0.55);
+      --text-muted: rgba(240, 239, 255, 0.28);
+      --accent: #6E56FF;
+      --accent-soft: rgba(110, 86, 255, 0.12);
+      --accent-glow: rgba(110, 86, 255, 0.25);
+      --gold: #C9A84C;
+      --gold-soft: rgba(201, 168, 76, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.8;
+      position: relative;
+    }
+
+    /* Floating Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatUp ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 420px;
+      height: 420px;
+      top: 15%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(110, 86, 255, 0.10), transparent 70%);
+      filter: blur(60px);
+      animation-duration: 12s;
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      top: 60%;
+      right: -8%;
+      background: radial-gradient(circle, rgba(110, 86, 255, 0.10), transparent 70%);
+      filter: blur(60px);
+      animation-duration: 12s;
+      animation-delay: 4s;
+    }
+
+    .orb-3 {
+      width: 200px;
+      height: 200px;
+      top: 35%;
+      left: 55%;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.06), transparent 70%);
+      filter: blur(50px);
+      animation-duration: 14s;
+      animation-delay: 2s;
+    }
+
+    .orb-4 {
+      width: 150px;
+      height: 150px;
+      top: 80%;
+      left: 20%;
+      background: radial-gradient(circle, rgba(110, 86, 255, 0.08), transparent 70%);
+      filter: blur(40px);
+      animation-duration: 10s;
+      animation-delay: 1s;
+    }
+
+    .orb-5 {
+      width: 350px;
+      height: 350px;
+      top: -10%;
+      right: 10%;
+      background: radial-gradient(circle, rgba(110, 86, 255, 0.05), transparent 70%);
+      filter: blur(70px);
+      animation-duration: 16s;
+      animation-delay: 3s;
+    }
+
+    .orb-6 {
+      width: 250px;
+      height: 250px;
+      top: 50%;
+      left: 10%;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.04), transparent 70%);
+      filter: blur(50px);
+      animation-duration: 13s;
+      animation-delay: 5s;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-30px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.5);
+        opacity: 0.5;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    h1,
+    h2,
+    h3,
+    .logo-text,
+    .syne {
+      font-family: 'Syne', sans-serif;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5vw;
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      padding: 120px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Scroll Animation Utility */
+    .animate-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .animate-up.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo-nexa {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--text-primary);
+    }
+
+    .logo-dot {
+      width: 6px;
+      height: 6px;
+      background-color: var(--accent);
+      border-radius: 50%;
+    }
+
+    .logo-studio {
+      font-family: 'Syne', sans-serif;
+      font-weight: 400;
+      font-size: 24px;
+      color: var(--text-secondary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a.link {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+    }
+
+    .nav-links a.link:hover,
+    .nav-links a.link.active {
+      color: var(--accent);
+    }
+
+    .nav-links a.link.active {
+      border-bottom-color: var(--accent);
+    }
+
+    .btn-cta {
+      background-color: var(--accent);
+      color: #FFF;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 14px 24px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn-cta:hover {
+      background-color: #7b65ff;
+      box-shadow: 0 0 20px rgba(110, 86, 255, 0.4);
+    }
+
+    /* Mobile Nav */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 102;
+    }
+
+    .menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background-color: var(--text-primary);
+      transition: 0.3s;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      z-index: 101;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mobile-menu a {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      color: var(--text-primary);
+    }
+
+    /* Section Headers */
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 1px;
+      background-color: var(--accent);
+    }
+
+    .section-title {
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 700;
+      line-height: 0.92;
+      margin-bottom: 40px;
+    }
+
+    .section-title .glow {
+      color: var(--accent);
+      text-shadow: 0 0 40px rgba(110, 86, 255, 0.5);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+    }
+
+    .hero-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-tag-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #2ECC71;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .hero h1 {
+      font-size: clamp(72px, 10vw, 140px);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -3px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .word-2 {
+      color: var(--accent);
+      text-shadow: 0 0 40px rgba(110, 86, 255, 0.5);
+    }
+
+    .hero h2 {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      font-family: 'DM Sans', sans-serif;
+      margin-bottom: 24px;
+    }
+
+    .hero p {
+      font-weight: 300;
+      color: var(--text-secondary);
+      max-width: 480px;
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 40px;
+      justify-content: center;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 14px 24px;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-stat-divider {
+      width: 1px;
+      height: 24px;
+      background-color: var(--border);
+    }
+
+    .hero-stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .hero-stat-val {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .industries-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 32px 40px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(110, 86, 255, 0.1);
+      max-width: 600px;
+      margin: 60px auto 0;
+    }
+
+    .industries-card ul {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .industries-card li {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .industries-card li span {
+      color: var(--accent);
+    }
+
+    .industries-card-bottom {
+      background-color: var(--accent-soft);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Services */
+    .pill-strip {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: all 0.3s;
+      cursor: default;
+    }
+
+    .pill:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .services-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 60px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .service-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-6px);
+    }
+
+    .service-icon {
+      margin-bottom: 24px;
+      display: flex;
+    }
+
+    .service-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .service-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .service-desc {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .service-tag {
+      background-color: var(--accent-soft);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* Portfolio */
+    .portfolio-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 60px;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 32px;
+    }
+
+    .portfolio-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s ease;
+    }
+
+    .portfolio-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-8px);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-glow);
+    }
+
+    .p-card-1,
+    .p-card-4 {
+      grid-column: span 7;
+    }
+
+    .p-card-2,
+    .p-card-3 {
+      grid-column: span 5;
+    }
+
+    .p-card-5,
+    .p-card-6 {
+      grid-column: span 6;
+    }
+
+    .browser-top {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot-r {
+      background-color: #FF5F56;
+    }
+
+    .dot-y {
+      background-color: #FFBD2E;
+    }
+
+    .dot-g {
+      background-color: #27C93F;
+    }
+
+    .browser-url {
+      display: none;
+    }
+
+    .portfolio-iframe-wrap {
+      width: 100%;
+      height: 400px;
+      background: #0A0A0F;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .portfolio-iframe-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .portfolio-info {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--surface-2);
+    }
+
+    .p-client {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .p-tag {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .p-link {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      transition: 0.3s;
+    }
+
+    .p-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Pricing */
+    .pricing-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .pricing-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 44px 32px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 0 1px rgba(110, 86, 255, 0.3), 0 24px 60px rgba(110, 86, 255, 0.15);
+    }
+
+    .badge-popular {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--gold-soft);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-align: center;
+      padding: 6px;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      border-top-left-radius: 16px;
+      border-top-right-radius: 16px;
+    }
+
+    .pricing-card.featured {
+      padding-top: 60px;
+    }
+
+    .price-wrap {
+      margin-bottom: 24px;
+    }
+
+    .price {
+      font-size: 48px;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      line-height: 1;
+    }
+
+    .price.gold {
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+    }
+
+    .price-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .price-best {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-weight: 400;
+      min-height: 44px;
+    }
+
+    .pricing-features {
+      flex: 1;
+      margin-bottom: 40px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      align-items: flex-start;
+    }
+
+    .pricing-features li.disabled {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .p-icon {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .p-icon.x {
+      color: var(--text-muted);
+      font-weight: normal;
+    }
+
+    .pricing-card .btn-outline {
+      width: 100%;
+      text-align: center;
+    }
+
+    .pricing-card .btn-cta {
+      width: 100%;
+      text-align: center;
+    }
+
+    .pricing-strip {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .strip-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .strip-item svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent);
+      fill: none;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .stat-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .sc-num {
+      font-size: 36px;
+      font-weight: 800;
+      font-family: 'Syne', sans-serif;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .sc-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .contact-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(110, 86, 255, 0.15);
+      animation: floatUp 8s ease-in-out infinite;
+      margin-top: 20px;
+    }
+
+    .contact-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .contact-card p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .contact-divider {
+      width: 100%;
+      height: 1px;
+      background-color: var(--border);
+      margin-bottom: 24px;
+    }
+
+    .contact-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .cr-item {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .cr-item a {
+      color: var(--text-primary);
+    }
+
+    .contact-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .form-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px;
+    }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      padding: 12px 0;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+      border-bottom-color: var(--accent);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+    }
+
+    .form-label {
+      position: absolute;
+      left: 0;
+      top: 12px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      pointer-events: none;
+      transition: 0.3s;
+    }
+
+    .form-control:focus~.form-label,
+    .form-control:not(:placeholder-shown)~.form-label {
+      top: -12px;
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    select.form-control {
+      appearance: none;
+      color: var(--text-secondary);
+    }
+
+    select.form-control option {
+      background-color: var(--surface-2);
+      color: var(--text-primary);
+    }
+
+    .form-card .btn-cta {
+      width: 100%;
+      padding: 16px;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .success-icon {
+      font-size: 48px;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .success-msg h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .success-msg p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 24px 52px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .foot-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .foot-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .foot-links a {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.3s;
+    }
+
+    .foot-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .foot-copy {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media(max-width: 900px) {
+
+      .nav-links,
+      .btn-cta {
+        display: none;
+      }
+
+      nav .btn-cta {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      .hero-tag {
+        justify-content: center;
+      }
+
+      .hero p {
+        margin: 0 auto 40px;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hero-stats {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .portfolio-grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 80px 0;
+      }
+
+      .foot-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+    }
+
+    /* WhatsApp Floating Button & Modal */
+    .wa-fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #25D366;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
+      z-index: 999;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .wa-fab:hover {
+      transform: scale(1.1) translateY(-5px);
+    }
+
+    .wa-fab svg {
+      width: 32px;
+      height: 32px;
+      fill: #FFF;
+    }
+
+    .wa-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 15, 0.6);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .wa-modal.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .wa-modal-content {
+      background: var(--surface-2);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(110, 86, 255, 0.2);
+      transform: translateY(40px) scale(0.95);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .wa-modal.open .wa-modal-content {
+      transform: translateY(0) scale(1);
+    }
+
+    .wa-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .wa-close:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .wa-modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .wa-modal-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .wa-group {
+      margin-bottom: 20px;
+    }
+
+    .wa-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .wa-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .wa-input:focus {
+      border-color: var(--accent);
+    }
+
+    .wa-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .wa-option {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .wa-option:hover {
+      border-color: var(--text-muted);
+    }
+
+    .wa-option.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .wa-range-wrap {
+      padding: 10px 0;
+    }
+
+    .wa-range {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      margin-bottom: 4px;
+    }
+
+    .wa-range-vals {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
+
+    .wa-submit {
+      width: 100%;
+      background: #25D366;
+      color: #FFF;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .wa-submit:hover {
+      background: #20BA56;
+      box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    /* Custom Scrollbar for Modal */
+    .wa-modal-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .wa-modal-content::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="orb orb-5"></div>
+  <div class="orb orb-6"></div>
+
+  <!-- Nav -->
+  <nav id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        <span class="logo-nexa">NEXA</span>
+        <span class="logo-dot"></span>
+        <span class="logo-studio">STUDIO</span>
+      </a>
+      <div class="nav-links">
+        <a href="#home" class="link active">Home</a>
+        <a href="#services" class="link">Services</a>
+        <a href="#work" class="link">Work</a>
+        <a href="#pricing" class="link">Pricing</a>
+        <a href="#contact" class="link">Contact</a>
+      </div>
+      <a href="#contact" class="btn-cta">Start a Project &rarr;</a>
+
+      <div class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" class="mob-link">Home</a>
+    <a href="#services" class="mob-link">Services</a>
+    <a href="#work" class="mob-link">Work</a>
+    <a href="#pricing" class="mob-link">Pricing</a>
+    <a href="#contact" class="mob-link">Contact</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content animate-up" style="transition-delay: 0.1s;">
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span> AVAILABLE FOR PROJECTS
+        </div>
+        <h1>
+          <div class="word-1">WE BUILD</div>
+          <div class="word-2">PRESENCE</div>
+        </h1>
+        <h2>Websites that generate real enquiries for real businesses.</h2>
+        <p>We design and develop clean, fast, professional websites for clinics, gyms, manufacturers, schools, and
+          service businesses that want an online presence — not a store.</p>
+
+        <div class="hero-buttons">
+          <a href="#work" class="btn-cta" style="border-radius: 0;">View Our Work</a>
+          <a href="#contact" class="btn-outline">Get In Touch</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-val">6+ Clients</span>
+            <span class="hero-stat-label">Happy Businesses</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-val">3 Industries</span>
+            <span class="hero-stat-label">Specialised</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat-val">100% On-Time</span>
+            <span class="hero-stat-label">Delivery</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services">
+    <div class="container">
+      <div class="section-label animate-up">WHAT WE DO</div>
+      <h2 class="section-title animate-up" style="transition-delay: 0.1s;">
+        Services Built For<br><span class="glow">Real Businesses</span>
+      </h2>
+
+      <div class="pill-strip animate-up" style="transition-delay: 0.2s;">
+        <div class="pill">Clinics</div>
+        <div class="pill">Gyms</div>
+        <div class="pill">Schools</div>
+        <div class="pill">Manufacturers</div>
+        <div class="pill">Consultants</div>
+        <div class="pill">Law Firms</div>
+        <div class="pill">Restaurants</div>
+        <div class="pill">Hotels</div>
+        <div class="pill">Real Estate</div>
+        <div class="pill">Architects</div>
+        <div class="pill">NGOs</div>
+        <div class="pill">Agencies</div>
+      </div>
+
+      <p class="services-note animate-up" style="transition-delay: 0.25s;">We specialize in static and dynamic websites
+        for service businesses that need professional online presence and enquiry generation — not ecommerce stores.</p>
+
+      <div class="services-grid">
+        <!-- Service 1 -->
+        <div class="service-card animate-up" style="transition-delay: 0.3s;">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <polyline points="12 16 12 8 8 12"></polyline>
+              <polyline points="16 12 12 8"></polyline>
+            </svg>
+          </div>
+          <h3 class="service-title syne">Landing Page</h3>
+          <p class="service-desc">A single, scrollable, high-impact page. Perfect for clinics, gyms, and consultants who
+            want a professional online address, contact form, and location map. Loads fast, looks premium.</p>
+          <div class="service-tags">
+            <span class="service-tag">1 Page</span>
+            <span class="service-tag">Contact Form</span>
+            <span class="service-tag">Mobile Ready</span>
+            <span class="service-tag">Delivered in 7 Days</span>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card animate-up" style="transition-delay: 0.4s;">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 12 12 17 22 12"></polyline>
+              <polyline points="2 17 12 22 22 17"></polyline>
+            </svg>
+          </div>
+          <h3 class="service-title syne">Dynamic Single Page</h3>
+          <p class="service-desc">A single-page website with animated sections, smooth scroll navigation, interactive
+            elements, and micro-animations. Ideal for gyms, design studios, and modern service businesses.</p>
+          <div class="service-tags">
+            <span class="service-tag">Animated</span>
+            <span class="service-tag">Interactive</span>
+            <span class="service-tag">Scroll Nav</span>
+            <span class="service-tag">10-Day Delivery</span>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card animate-up" style="transition-delay: 0.5s;">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+          </div>
+          <h3 class="service-title syne">Multi-Page Website</h3>
+          <p class="service-desc">A complete multi-page site with Home, About, Services, Gallery, and Contact pages.
+            Best for schools, manufacturers, clinics with multiple services, and businesses that need depth and
+            structure.</p>
+          <div class="service-tags">
+            <span class="service-tag">5+ Pages</span>
+            <span class="service-tag">Gallery</span>
+            <span class="service-tag">SEO Ready</span>
+            <span class="service-tag">14-Day Delivery</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="industries-card animate-up" style="transition-delay: 0.6s;">
+        <h3 class="syne" style="font-size: 22px; font-weight: 700; margin-bottom: 24px; text-align: center;">Industries We Specialize In</h3>
+        <ul>
+          <li><span>✦</span> Dental &amp; Medical Clinic Sites</li>
+          <li><span>✦</span> Gym &amp; Fitness Brand Websites</li>
+          <li><span>✦</span> Industrial &amp; Manufacturing Companies</li>
+          <li><span>✦</span> Schools &amp; Educational Institutions</li>
+          <li><span>✦</span> Professional Service Businesses</li>
+        </ul>
+        <div class="industries-card-bottom">
+          Starting at ₹4,999* <span style="font-size:11px; font-weight:400; opacity:0.8; display:block; margin-top:4px;">*Excludes Domain & Hosting</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section id="work">
+    <div class="container">
+      <div class="section-label animate-up">LIVE PROJECTS</div>
+      <h2 class="section-title animate-up" style="transition-delay: 0.1s;">
+        Work That<br><span class="glow">Speaks</span>
+      </h2>
+      <p class="portfolio-note animate-up" style="transition-delay: 0.2s;">All websites below are live and functional —
+        click to visit.</p>
+
+      <div class="portfolio-grid">
+        <!-- Project 1 -->
+        <div class="portfolio-card p-card-1 animate-up" style="transition-delay: 0.3s;">
+          <div class="browser-top">
+            <div class="browser-dots">
+              <div class="browser-dot dot-r"></div>
+              <div class="browser-dot dot-y"></div>
+              <div class="browser-dot dot-g"></div>
+            </div>
+            <div class="browser-url">wajid0005.github.io/demo_dental_web_2/</div>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <iframe src="https://wajid0005.github.io/demo_dental_web_2/" loading="lazy" title="Luminary Dental Clinic"></iframe>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <div class="p-client syne">Luminary Dental Clinic</div>
+              <div class="p-tag">DENTAL CLINIC</div>
+            </div>
+            <a href="https://wajid0005.github.io/demo_dental_web_2/" target="_blank" rel="noopener" class="p-link">Visit
+              Site &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="portfolio-card p-card-2 animate-up" style="transition-delay: 0.4s;">
+          <div class="browser-top">
+            <div class="browser-dots">
+              <div class="browser-dot dot-r"></div>
+              <div class="browser-dot dot-y"></div>
+              <div class="browser-dot dot-g"></div>
+            </div>
+            <div class="browser-url">wajid0005.github.io/dental_web/</div>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <iframe src="https://wajid0005.github.io/dental_web/" loading="lazy" title="Indira Dental Clinic"></iframe>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <div class="p-client syne">Indira Dental Clinic</div>
+              <div class="p-tag">DENTAL CLINIC</div>
+            </div>
+            <a href="https://wajid0005.github.io/dental_web/" target="_blank" rel="noopener" class="p-link">Visit Site
+              &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="portfolio-card p-card-3 animate-up" style="transition-delay: 0.3s;">
+          <div class="browser-top">
+            <div class="browser-dots">
+              <div class="browser-dot dot-r"></div>
+              <div class="browser-dot dot-y"></div>
+              <div class="browser-dot dot-g"></div>
+            </div>
+            <div class="browser-url">wajid0005.github.io/Muscle-Flex-Website/</div>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <iframe src="https://wajid0005.github.io/Muscle-Flex-Website/" loading="lazy" title="Muscle Flex"></iframe>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <div class="p-client syne">Muscle Flex</div>
+              <div class="p-tag">FITNESS BRAND</div>
+            </div>
+            <a href="https://wajid0005.github.io/Muscle-Flex-Website/" target="_blank" rel="noopener"
+              class="p-link">Visit Site &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="portfolio-card p-card-4 animate-up" style="transition-delay: 0.4s;">
+          <div class="browser-top">
+            <div class="browser-dots">
+              <div class="browser-dot dot-r"></div>
+              <div class="browser-dot dot-y"></div>
+              <div class="browser-dot dot-g"></div>
+            </div>
+            <div class="browser-url">wajid0005.github.io/zain_arzain_website/</div>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <iframe src="https://wajid0005.github.io/zain_arzain_website/index.html" loading="lazy" title="Zain Arzain Polymers PVT LTD"></iframe>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <div class="p-client syne">Zain Arzain Polymers PVT LTD</div>
+              <div class="p-tag">MANUFACTURING</div>
+            </div>
+            <a href="https://wajid0005.github.io/zain_arzain_website/index.html" target="_blank" rel="noopener"
+              class="p-link">Visit Site &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Project 5 -->
+        <div class="portfolio-card p-card-5 animate-up" style="transition-delay: 0.3s;">
+          <div class="browser-top">
+            <div class="browser-dots">
+              <div class="browser-dot dot-r"></div>
+              <div class="browser-dot dot-y"></div>
+              <div class="browser-dot dot-g"></div>
+            </div>
+            <div class="browser-url">wajid0005.github.io/fit_for_life/</div>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <iframe src="https://wajid0005.github.io/fit_for_life/" loading="lazy" title="Fit for Life"></iframe>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <div class="p-client syne">Fit for Life</div>
+              <div class="p-tag">WELLNESS BRAND</div>
+            </div>
+            <a href="https://wajid0005.github.io/fit_for_life/" target="_blank" rel="noopener" class="p-link">Visit Site
+              &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Project 6 -->
+        <div class="portfolio-card p-card-6 animate-up" style="transition-delay: 0.4s;">
+          <div class="browser-top">
+            <div class="browser-dots">
+              <div class="browser-dot dot-r"></div>
+              <div class="browser-dot dot-y"></div>
+              <div class="browser-dot dot-g"></div>
+            </div>
+            <div class="browser-url">wajid0005.github.io/vidyasagar_international_school/</div>
+          </div>
+          <div class="portfolio-iframe-wrap">
+            <iframe src="https://wajid0005.github.io/school_multipage_web/" loading="lazy" title="Vidyasagar International School"></iframe>
+          </div>
+          <div class="portfolio-info">
+            <div>
+              <div class="p-client syne">Vidyasagar International School</div>
+              <div class="p-tag">EDUCATION</div>
+            </div>
+            <a href="https://wajid0005.github.io/school_multipage_web/" target="_blank" rel="noopener"
+              class="p-link">Visit Site &rarr;</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing">
+    <div class="container">
+      <div class="section-label animate-up">INVESTMENT</div>
+      <h2 class="section-title animate-up" style="transition-delay: 0.1s;">
+        Simple,<br><span class="glow">Transparent Pricing</span>
+      </h2>
+      <p class="pricing-note animate-up" style="transition-delay: 0.2s;">Website design fee is a one-time payment.<br>*Domain &amp; Hosting charges are separate and billed annually.</p>
+
+      <div class="pricing-grid">
+        <!-- Tier 1 -->
+        <div class="pricing-card animate-up" style="transition-delay: 0.3s;">
+          <div class="price-wrap">
+            <div class="price">₹4,999</div>
+            <div class="price-label">one-time</div>
+          </div>
+          <div class="price-best">Best for: Clinics, Consultants, Local Businesses</div>
+          <ul class="pricing-features">
+            <li><span class="p-icon">✓</span> 1-page landing website</li>
+            <li><span class="p-icon">✓</span> Mobile responsive design</li>
+            <li><span class="p-icon">✓</span> WhatsApp &amp; phone contact button</li>
+            <li><span class="p-icon">✓</span> Google Maps embed</li>
+            <li><span class="p-icon">✓</span> Basic SEO setup</li>
+            <li><span class="p-icon">✓</span> Delivered in 7 days</li>
+            <li class="disabled"><span class="p-icon x">✗</span> No animations</li>
+            <li class="disabled"><span class="p-icon x">✗</span> No multi-page</li>
+          </ul>
+          <a href="#contact" class="btn-outline">Get Basic Site</a>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="pricing-card featured animate-up" style="transition-delay: 0.4s;">
+          <div class="badge-popular">MOST POPULAR</div>
+          <div class="price-wrap">
+            <div class="price gold">₹6,999</div>
+            <div class="price-label">one-time</div>
+          </div>
+          <div class="price-best">Best for: Gyms, Studios, Modern Service Businesses</div>
+          <ul class="pricing-features">
+            <li><span class="p-icon">✓</span> Single-page with animated sections</li>
+            <li><span class="p-icon">✓</span> Smooth scroll navigation</li>
+            <li><span class="p-icon">✓</span> Micro-animations &amp; interactions</li>
+            <li><span class="p-icon">✓</span> Contact form with WhatsApp link</li>
+            <li><span class="p-icon">✓</span> Mobile + tablet responsive</li>
+            <li><span class="p-icon">✓</span> Google Maps + SEO</li>
+            <li><span class="p-icon">✓</span> Gallery or portfolio section</li>
+            <li><span class="p-icon">✓</span> Delivered in 10 days</li>
+          </ul>
+          <a href="#contact" class="btn-cta" style="border-radius: 0;">Get Dynamic Site</a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="pricing-card animate-up" style="transition-delay: 0.5s;">
+          <div class="price-wrap">
+            <div class="price">₹9,999</div>
+            <div class="price-label">one-time</div>
+          </div>
+          <div class="price-best">Best for: Schools, Manufacturers, Large Clinics</div>
+          <ul class="pricing-features">
+            <li><span class="p-icon">✓</span> Up to 5 separate pages</li>
+            <li><span class="p-icon">✓</span> Home, About, Services, Gallery, Contact</li>
+            <li><span class="p-icon">✓</span> Fully animated throughout</li>
+            <li><span class="p-icon">✓</span> Enquiry form (email-ready)</li>
+            <li><span class="p-icon">✓</span> Image gallery / portfolio section</li>
+            <li><span class="p-icon">✓</span> Google Maps &amp; business info</li>
+            <li><span class="p-icon">✓</span> Full SEO optimization</li>
+            <li><span class="p-icon">✓</span> 1 free revision round</li>
+            <li><span class="p-icon">✓</span> Delivered in 14 days</li>
+          </ul>
+          <a href="#contact" class="btn-outline">Get Full Site</a>
+        </div>
+      </div>
+
+      <div class="pricing-strip animate-up" style="transition-delay: 0.6s;">
+        <div class="strip-item"><svg viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg> Free SSL Setup</div>
+        <div class="strip-item"><svg viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg> WhatsApp Integration</div>
+        <div class="strip-item"><svg viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg> Mobile First Design</div>
+        <div class="strip-item"><svg viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg> Lifetime Code Ownership</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container about-grid">
+      <div class="about-text animate-up" style="transition-delay: 0.1s;">
+        <div class="section-label">WHY NEXAWEBSTUDIO</div>
+        <h2 class="section-title">We Only Build<br><span class="glow">What We Know</span></h2>
+        <p>We are a focused web studio that only takes on projects we can deliver with excellence using HTML, CSS, and
+          JavaScript. No WordPress. No page builders. No bloated plugins. Every website is hand-coded, lightweight, and
+          fast.</p>
+        <p>We work with businesses that need professional online presence — a website that looks trustworthy, works on
+          all devices, and drives real enquiries from real customers.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card animate-up" style="transition-delay: 0.2s;">
+          <div class="sc-num">6+</div>
+          <div class="sc-label">Live Websites</div>
+        </div>
+        <div class="stat-card animate-up" style="transition-delay: 0.3s;">
+          <div class="sc-num">3</div>
+          <div class="sc-label">Business Verticals</div>
+        </div>
+        <div class="stat-card animate-up" style="transition-delay: 0.4s;">
+          <div class="sc-num">7 Days</div>
+          <div class="sc-label">Fastest Delivery</div>
+        </div>
+        <div class="stat-card animate-up" style="transition-delay: 0.5s;">
+          <div class="sc-num">100%</div>
+          <div class="sc-label">On-Time Rate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container contact-grid">
+      <div class="contact-info animate-up" style="transition-delay: 0.1s;">
+        <div class="section-label">GET IN TOUCH</div>
+        <h2 class="section-title">Let's Build Your<br><span class="glow">Website</span></h2>
+
+        <div class="contact-card">
+          <h3 class="syne">NexaWebStudio</h3>
+          <p>Web Design &amp; Development Studio</p>
+          <div class="contact-divider"></div>
+          <div class="contact-rows">
+            <div class="cr-item"><span>📧</span> <a href="mailto:005wajid@gmail.com">005wajid@gmail.com</a></div>
+            <div class="cr-item"><span>💬</span> <a href="https://wa.me/916290409878" target="_blank"
+                rel="noopener">WhatsApp: Click to Chat</a></div>
+            <div class="cr-item"><span>📍</span> Location: Remote — Available Across India</div>
+          </div>
+          <div class="contact-note">Response within 24 hours. Free consultation call available.</div>
+        </div>
+      </div>
+
+      <div class="form-wrapper animate-up" style="transition-delay: 0.3s;">
+        <div class="form-card" id="contactFormWrapper">
+          <form id="contactForm">
+            <div class="form-group">
+              <input type="text" id="name" class="form-control" placeholder=" " required>
+              <label for="name" class="form-label">Your Name</label>
+            </div>
+            <div class="form-group">
+              <input type="text" id="bizName" class="form-control" placeholder=" " required>
+              <label for="bizName" class="form-label">Business Name</label>
+            </div>
+            <div class="form-group">
+              <select id="bizType" class="form-control" required>
+                <option value="" disabled selected></option>
+                <option value="Dental / Medical Clinic">Dental / Medical Clinic</option>
+                <option value="Gym / Fitness Center">Gym / Fitness Center</option>
+                <option value="School / College">School / College</option>
+                <option value="Manufacturing / Industrial">Manufacturing / Industrial</option>
+                <option value="Restaurant / Hotel">Restaurant / Hotel</option>
+                <option value="Consultant / Freelancer">Consultant / Freelancer</option>
+                <option value="Other">Other</option>
+              </select>
+              <label for="bizType" class="form-label"
+                style="top: -12px; font-size: 11px; color: var(--accent);">Business Type</label>
+            </div>
+            <div class="form-group">
+              <select id="planType" class="form-control" required>
+                <option value="" disabled selected></option>
+                <option value="Basic ₹4,999">Basic ₹4,999</option>
+                <option value="Dynamic ₹6,999">Dynamic ₹6,999</option>
+                <option value="Multi-Page ₹9,999">Multi-Page ₹9,999</option>
+                <option value="Not Sure Yet">Not Sure Yet</option>
+              </select>
+              <label for="planType" class="form-label" style="top: -12px; font-size: 11px; color: var(--accent);">Which
+                Plan?</label>
+            </div>
+            <div class="form-group">
+              <textarea id="message" class="form-control" rows="4" placeholder=" " required></textarea>
+              <label for="message" class="form-label">Tell us about your business</label>
+            </div>
+            <button type="submit" class="btn-cta" style="border-radius: 0;">Send Enquiry &rarr;</button>
+          </form>
+        </div>
+
+        <div class="success-msg" id="successMsg">
+          <div class="success-icon">✓</div>
+          <h3 class="syne">Message Sent!</h3>
+          <p>We'll get back to you within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Policies Section -->
+  <section id="policies" style="padding-top: 40px; padding-bottom: 60px; background-color: var(--surface); border-top: 1px solid var(--border);">
+    <div class="container animate-up">
+      <h3 class="syne" style="font-size: 20px; font-weight: 700; margin-bottom: 24px;">Important Service Policies</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; color: var(--text-secondary); font-size: 13px; line-height: 1.6;">
+        <div>
+          <h4 style="color: var(--text-primary); margin-bottom: 8px;">1. Domain &amp; Hosting</h4>
+          <p>The pricing packages (₹4,999, ₹6,999, etc.) strictly cover <strong>Website Design and Development only</strong>. Third-party expenses such as Domain Registration (e.g., .com, .in) and Web Hosting are to be borne by the client and are billed separately on an annual basis.</p>
+        </div>
+        <div>
+          <h4 style="color: var(--text-primary); margin-bottom: 8px;">2. Advance Payment &amp; Refunds</h4>
+          <p>A mandatory advance payment is required to commence development. <strong>Once work begins, advance payments are strictly non-refundable</strong> as they cover immediate time, labor, and resources allocated to your project.</p>
+        </div>
+        <div>
+          <h4 style="color: var(--text-primary); margin-bottom: 8px;">3. Project Deliverables</h4>
+          <p>Estimated timelines begin only after the client has provided all necessary content (text, logos, images). Any significant changes to the project scope after commencement may incur additional development charges.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="foot-container">
+      <a href="#" class="logo">
+        <span class="logo-nexa">NEXA</span>
+        <span class="logo-dot"></span>
+        <span class="logo-studio">STUDIO</span>
+      </a>
+      <div class="foot-links">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="foot-copy">&copy; 2026 NexaWebStudio. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Global Button -->
+  <div class="wa-fab" id="waFab">
+    <svg viewBox="0 0 24 24">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+    </svg>
+  </div>
+
+  <!-- WhatsApp Modal -->
+  <div class="wa-modal" id="waModal">
+    <div class="wa-modal-content">
+      <div class="wa-close" id="waClose">&times;</div>
+      <h3 class="syne wa-modal-title">Start a Conversation</h3>
+      <p class="wa-modal-desc">Share a few details, and we'll chat on WhatsApp.</p>
+
+      <div class="wa-group">
+        <label class="wa-label">Your Name</label>
+        <input type="text" id="waName" class="wa-input" placeholder="e.g. John Doe" />
+      </div>
+
+      <div class="wa-group">
+        <label class="wa-label">Business Type</label>
+        <div class="wa-options" id="waBizTypes">
+          <div class="wa-option">Clinic / Medical</div>
+          <div class="wa-option">Gym / Fitness</div>
+          <div class="wa-option">School / College</div>
+          <div class="wa-option">Manufacturing</div>
+          <div class="wa-option">Consultancy</div>
+          <div class="wa-option" id="waOtherOption">Other</div>
+        </div>
+        <input type="text" id="waOtherType" class="wa-input" placeholder="Please specify..."
+          style="display:none; margin-top:10px;" />
+      </div>
+
+      <div class="wa-group">
+        <label class="wa-label">Business Name (Optional)</label>
+        <input type="text" id="waBizName" class="wa-input" placeholder="e.g. Luminary Dental" />
+      </div>
+
+      <div class="wa-group">
+        <label class="wa-label">Type of Website</label>
+        <div class="wa-options" id="waWebTypes">
+          <div class="wa-option">Basic ₹4,999</div>
+          <div class="wa-option">Dynamic ₹6,999</div>
+          <div class="wa-option">Multi-Page ₹9,999</div>
+          <div class="wa-option">Discuss First</div>
+        </div>
+      </div>
+
+      <div class="wa-group">
+        <label class="wa-label">Ready to Pay Advance? (To start work)</label>
+        <div class="wa-options" id="waAdvance">
+          <div class="wa-option">Yes</div>
+          <div class="wa-option">No</div>
+          <div class="wa-option">Need Details</div>
+        </div>
+      </div>
+
+      <div class="wa-group">
+        <label class="wa-label">Estimated Budget: <span id="waBudgetVal"
+            style="color:var(--accent);">₹10,000</span></label>
+        <div class="wa-range-wrap">
+          <input type="range" id="waBudget" class="wa-range" min="5000" max="50000" step="1000" value="10000" />
+          <div class="wa-range-vals">
+            <span>₹5k</span>
+            <span>₹50k+</span>
+          </div>
+        </div>
+      </div>
+
+      <button id="waSendBtn" class="wa-submit">
+        <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#FFF;">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+        </svg>
+        Send via WhatsApp
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll blur nav
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile Menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobLinks = document.querySelectorAll('.mob-link');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    mobLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // Intersection Observer for scroll animations
+    const animatedElements = document.querySelectorAll('.animate-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    animatedElements.forEach(el => observer.observe(el));
+
+    // Scroll Spy for Nav links
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links .link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (pageYOffset >= (sectionTop - 150)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Form submission simulation
+    const contactForm = document.getElementById('contactForm');
+    const formWrapper = document.getElementById('contactFormWrapper');
+    const successMsg = document.getElementById('successMsg');
+
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value.trim();
+      const bizName = document.getElementById('bizName').value.trim();
+      const bizType = document.getElementById('bizType').value;
+      const planType = document.getElementById('planType').value;
+      const message = document.getElementById('message').value.trim();
+      
+      let msg = `Hi NexaWebStudio, I have an enquiry from your website contact form! 📩\n\n`;
+      if (name) msg += `*Name:* ${name}\n`;
+      if (bizType) msg += `*Business Type:* ${bizType}\n`;
+      if (bizName) msg += `*Business Name:* ${bizName}\n`;
+      if (planType) msg += `*Plan Selected:* ${planType}\n`;
+      if (message) msg += `*Message:* ${message}\n`;
+
+      const phone = "916290409878";
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+
+      formWrapper.style.display = 'none';
+      successMsg.style.display = 'block';
+    });
+
+    // WhatsApp Overlay Logic
+    const waFab = document.getElementById('waFab');
+    const waModal = document.getElementById('waModal');
+    const waClose = document.getElementById('waClose');
+
+    waFab.addEventListener('click', () => waModal.classList.add('open'));
+    waClose.addEventListener('click', () => waModal.classList.remove('open'));
+    waModal.addEventListener('click', (e) => {
+      if (e.target === waModal) waModal.classList.remove('open');
+    });
+
+    // Pill single-selection logic
+    function setupPills(containerId) {
+      const container = document.getElementById(containerId);
+      const pills = container.querySelectorAll('.wa-option');
+      let selected = null;
+      pills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          pills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          selected = pill.textContent;
+          if (containerId === 'waBizTypes') {
+            const waOtherType = document.getElementById('waOtherType');
+            if (pill.id === "waOtherOption") {
+              waOtherType.style.display = 'block';
+            } else {
+              waOtherType.style.display = 'none';
+            }
+          }
+        });
+      });
+      return () => {
+        if (containerId === 'waBizTypes' && selected === 'Other') {
+          return document.getElementById('waOtherType').value || 'Other';
+        }
+        return selected;
+      };
+    }
+    const getBizType = setupPills('waBizTypes');
+    const getWebType = setupPills('waWebTypes');
+    const getAdvance = setupPills('waAdvance');
+
+    // Budget Slider Logic
+    const waBudget = document.getElementById('waBudget');
+    const waBudgetVal = document.getElementById('waBudgetVal');
+    waBudget.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value).toLocaleString('en-IN');
+      waBudgetVal.textContent = e.target.value == 50000 ? `₹${val}+` : `₹${val}`;
+    });
+
+    // Send Form
+    const waSendBtn = document.getElementById('waSendBtn');
+    waSendBtn.addEventListener('click', () => {
+      const name = document.getElementById('waName').value.trim();
+      const bizName = document.getElementById('waBizName').value.trim();
+      const bizType = getBizType();
+      const webType = getWebType();
+      const advance = getAdvance();
+      const budget = waBudgetVal.textContent;
+
+      let msg = `Hi NexaWebStudio, I'm interested in working with you! ✨\n\n`;
+      if (name) msg += `*Name:* ${name}\n`;
+      if (bizType) msg += `*Business Type:* ${bizType}\n`;
+      if (bizName) msg += `*Business Name:* ${bizName}\n`;
+      if (webType) msg += `*Website Plan:* ${webType}\n`;
+      if (advance) msg += `*Ready to pay advance:* ${advance}\n`;
+      msg += `*Budget:* ${budget}\n\n`;
+      msg += `_(Note: I understand that Domain & Hosting are extra.)_`;
+
+      const phone = "916290409878";
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+      waModal.classList.remove('open');
+    });
+  </script>
+</body>
+
+</html>
