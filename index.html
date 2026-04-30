@@ -1249,6 +1249,35 @@
       .contact-card, .form-card {
         padding: 24px;
       }
+
+      /* Mobile Form UI Fixes */
+      .form-control, .wa-input {
+        font-size: 16px; /* Prevents iOS auto-zoom on input focus */
+      }
+      
+      .wa-fab {
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 50px !important;
+        height: 50px !important;
+      }
+      
+      .wa-fab svg {
+        width: 26px !important;
+        height: 26px !important;
+      }
+      
+      .promo-close {
+        top: -10px !important;
+        right: -10px !important;
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 14px !important;
+      }
+      
+      .promo-content {
+        max-width: 95% !important;
+      }
     }
 
     /* WhatsApp Floating Button & Modal */
@@ -1468,7 +1497,93 @@
       background: var(--border);
       border-radius: 10px;
     }
+    
+    .wa-input::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      cursor: pointer;
+      opacity: 0.7;
+    }
+    .wa-input::-webkit-calendar-picker-indicator:hover {
+      opacity: 1;
+    }
+
+    /* Promo Modal */
+    .promo-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(10, 10, 15, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    .promo-modal.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .promo-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90vh;
+      transform: translateY(20px) scale(0.95);
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .promo-modal.show .promo-content {
+      transform: translateY(0) scale(1);
+    }
+    .promo-content img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 16px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(110, 86, 255, 0.2);
+      display: block;
+    }
+    .promo-close {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      width: 32px;
+      height: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 2001;
+      transition: 0.3s;
+    }
+    .promo-close:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
   </style>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '4055849914701734');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=4055849914701734&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -2071,6 +2186,18 @@
       </div>
 
       <div class="wa-group">
+        <label class="wa-label">When should we call you?</label>
+        <div class="wa-options" id="waCallTime">
+          <div class="wa-option">Right Now</div>
+          <div class="wa-option active" id="waCallLaterOption">Select Date & Time</div>
+        </div>
+        <div id="waDateTimeWrap" style="display:block; margin-top:10px;">
+          <input type="date" id="waDate" class="wa-input" style="margin-bottom:8px;" />
+          <input type="time" id="waTime" class="wa-input" />
+        </div>
+      </div>
+
+      <div class="wa-group">
         <label class="wa-label">Business Type</label>
         <div class="wa-options" id="waBizTypes">
           <div class="wa-option">Clinic / Medical</div>
@@ -2127,6 +2254,14 @@
         </svg>
         Send via WhatsApp
       </button>
+    </div>
+  </div>
+
+  <!-- Promo Modal -->
+  <div class="promo-modal" id="promoModal">
+    <div class="promo-content">
+      <div class="promo-close" id="promoClose">&times;</div>
+      <img src="chatbot-promo.png" alt="Chat Bot Integration Coming Soon">
     </div>
   </div>
 
@@ -2236,6 +2371,9 @@
       const container = document.getElementById(containerId);
       const pills = container.querySelectorAll('.wa-option');
       let selected = null;
+      const defaultActive = container.querySelector('.active');
+      if (defaultActive) selected = defaultActive.textContent;
+
       pills.forEach(pill => {
         pill.addEventListener('click', () => {
           pills.forEach(p => p.classList.remove('active'));
@@ -2249,15 +2387,31 @@
               waOtherType.style.display = 'none';
             }
           }
+          if (containerId === 'waCallTime') {
+            const waDateTimeWrap = document.getElementById('waDateTimeWrap');
+            if (pill.id === "waCallLaterOption") {
+              waDateTimeWrap.style.display = 'block';
+            } else {
+              waDateTimeWrap.style.display = 'none';
+            }
+          }
         });
       });
       return () => {
         if (containerId === 'waBizTypes' && selected === 'Other') {
           return document.getElementById('waOtherType').value || 'Other';
         }
+        if (containerId === 'waCallTime' && selected === 'Select Date & Time') {
+          const dVal = document.getElementById('waDate').value;
+          const tVal = document.getElementById('waTime').value;
+          if (dVal && tVal) return `Scheduled for ${dVal} at ${tVal}`;
+          if (dVal) return `Scheduled for ${dVal}`;
+          return 'Select Date & Time';
+        }
         return selected;
       };
     }
+    const getCallTime = setupPills('waCallTime');
     const getBizType = setupPills('waBizTypes');
     const getWebType = setupPills('waWebTypes');
     const getAdvance = setupPills('waAdvance');
@@ -2265,9 +2419,15 @@
     // Budget Slider Logic
     const waBudget = document.getElementById('waBudget');
     const waBudgetVal = document.getElementById('waBudgetVal');
+    window.isUSD = false;
     waBudget.addEventListener('input', (e) => {
-      const val = parseInt(e.target.value).toLocaleString('en-IN');
-      waBudgetVal.textContent = e.target.value == 50000 ? `₹${val}+` : `₹${val}`;
+      if (window.isUSD) {
+        const val = parseInt(e.target.value);
+        waBudgetVal.textContent = val == 690 ? `$${val}+` : `$${val}`;
+      } else {
+        const val = parseInt(e.target.value).toLocaleString('en-IN');
+        waBudgetVal.textContent = e.target.value == 50000 ? `₹${val}+` : `₹${val}`;
+      }
     });
 
     // Send Form
@@ -2275,6 +2435,7 @@
     waSendBtn.addEventListener('click', () => {
       const name = document.getElementById('waName').value.trim();
       const bizName = document.getElementById('waBizName').value.trim();
+      const callTime = getCallTime();
       const bizType = getBizType();
       const webType = getWebType();
       const advance = getAdvance();
@@ -2282,6 +2443,7 @@
 
       let msg = `Hi NexaWebStudio, I'm interested in working with you! ✨\n\n`;
       if (name) msg += `*Name:* ${name}\n`;
+      if (callTime) msg += `*Time to Call:* ${callTime}\n`;
       if (bizType) msg += `*Business Type:* ${bizType}\n`;
       if (bizName) msg += `*Business Name:* ${bizName}\n`;
       if (webType) msg += `*Website Plan:* ${webType}\n`;
@@ -2294,6 +2456,82 @@
       window.open(url, '_blank');
       waModal.classList.remove('open');
     });
+
+    // Promo Modal Logic
+    const promoModal = document.getElementById('promoModal');
+    const promoClose = document.getElementById('promoClose');
+    let promoShown = false;
+    let scrollTimer = null;
+
+    window.addEventListener('scroll', () => {
+      if (!promoShown && window.scrollY > 100) {
+        if (!scrollTimer) {
+          scrollTimer = setTimeout(() => {
+            if (!promoShown) {
+              promoModal.classList.add('show');
+              promoShown = true;
+              
+              // Auto close after 5 seconds
+              setTimeout(() => {
+                promoModal.classList.remove('show');
+              }, 5000);
+            }
+          }, 1000);
+        }
+      }
+    });
+
+    promoClose.addEventListener('click', () => {
+      promoModal.classList.remove('show');
+    });
+
+    promoModal.addEventListener('click', (e) => {
+      if (e.target === promoModal) {
+        promoModal.classList.remove('show');
+      }
+    });
+
+    // IP Geolocation Currency Switch
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        if (data.country_code && data.country_code !== 'IN') {
+          window.isUSD = true;
+          
+          // Replace text globally in the DOM
+          const replaceText = (node) => {
+            if (node.nodeType === 3) {
+              let text = node.nodeValue;
+              let changed = false;
+              if (text.includes('₹4,999')) { text = text.replace(/₹4,999/g, '$69'); changed = true; }
+              if (text.includes('₹6,999')) { text = text.replace(/₹6,999/g, '$99'); changed = true; }
+              if (text.includes('₹9,999')) { text = text.replace(/₹9,999/g, '$129'); changed = true; }
+              
+              if (text.includes('₹10,000')) { text = text.replace(/₹10,000/g, '$140'); changed = true; }
+              if (text.includes('₹5k')) { text = text.replace(/₹5k/g, '$69'); changed = true; }
+              if (text.includes('₹50k+')) { text = text.replace(/₹50k\+/g, '$690+'); changed = true; }
+              if (changed) node.nodeValue = text;
+            } else {
+              node.childNodes.forEach(replaceText);
+            }
+          };
+          replaceText(document.body);
+
+          // Update option values (attributes)
+          document.querySelectorAll('option').forEach(opt => {
+            if (opt.value.includes('₹4,999')) opt.value = opt.value.replace(/₹4,999/g, '$69');
+            if (opt.value.includes('₹6,999')) opt.value = opt.value.replace(/₹6,999/g, '$99');
+            if (opt.value.includes('₹9,999')) opt.value = opt.value.replace(/₹9,999/g, '$129');
+          });
+
+          // Update WA Budget slider configuration
+          waBudget.min = 69;
+          waBudget.max = 690;
+          waBudget.step = 10;
+          waBudget.value = 140;
+        }
+      })
+      .catch(err => console.log('IP fetch failed:', err));
   </script>
 </body>
 
